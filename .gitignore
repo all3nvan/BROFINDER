@@ -24,3 +24,9 @@ proguard/
 
 # Log Files
 *.log
+
+# Ignore api key
+app/src/release/res/values/google_maps_api.xml
+
+# Ignore .idea folder
+.idea/
