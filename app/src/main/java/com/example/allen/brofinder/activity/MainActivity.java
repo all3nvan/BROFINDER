@@ -1,5 +1,7 @@
 package com.example.allen.brofinder.activity;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -51,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
-            //selectItem(position);
+            selectItem(position);
         }
     }
 
@@ -79,5 +81,21 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void selectItem(int position) {
+        Fragment fragment = null;
+        switch(position) {
+            case 0:
+                fragment = MapFragment.newInstance("herp", "derp");
+                break;
+        }
+        if(fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
+//        if(getActionBar() != null)
+//            getActionBar().setTitle(navdrawerItemTitles[position]);
+        drawerLayout.closeDrawer(drawerList);
     }
 }
