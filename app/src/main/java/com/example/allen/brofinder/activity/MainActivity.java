@@ -16,23 +16,27 @@ import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.domain.DrawerItem;
 import com.example.allen.brofinder.support.DrawerItemArrayAdapter;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
+    private String[] actionBarTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        actionBarTitles = getResources().getStringArray(R.array.nav_drawer_items_array);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        List<DrawerItem> drawerItemList = Arrays.asList(new DrawerItem("Home"));
+        // Initialize drawer item list
+        List<DrawerItem> drawerItemList = new ArrayList<>();
+        drawerItemList.add(new DrawerItem("Home"));
         DrawerItemArrayAdapter adapter = new DrawerItemArrayAdapter(this, R.layout.listview_nav_drawer_item_row, drawerItemList);
         drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -42,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        selectDrawerItem(0);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
-            selectItem(position);
+            selectDrawerItem(position);
         }
     }
 
@@ -83,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void selectItem(int position) {
+    private void selectDrawerItem(int position) {
         Fragment fragment = null;
         switch(position) {
             case 0:
@@ -94,8 +100,8 @@ public class MainActivity extends ActionBarActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
-//        if(getActionBar() != null)
-//            getActionBar().setTitle(navdrawerItemTitles[position]);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(actionBarTitles[position]);
         drawerLayout.closeDrawer(drawerList);
     }
 }
