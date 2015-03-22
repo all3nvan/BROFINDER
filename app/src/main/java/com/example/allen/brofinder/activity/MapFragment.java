@@ -17,8 +17,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static com.example.allen.brofinder.support.MapUtils.*;
 
 public class MapFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
@@ -28,6 +31,7 @@ public class MapFragment extends Fragment implements
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private Location currentLocation;
+    private Location destinationLocation;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,12 +76,18 @@ public class MapFragment extends Fragment implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        // Mock destinationLocation
+        destinationLocation = new Location("");
+        destinationLocation.setLatitude(29.615831d);
+        destinationLocation.setLongitude(-95.595978d);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        plotMarker(destinationLocation);
     }
 
     @Override
@@ -119,9 +129,8 @@ public class MapFragment extends Fragment implements
         Log.i("MapsActivity", "Location received: " + location.toString());
         this.currentLocation = location;
         googleApiClient.disconnect();
-        LatLng latlong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latlong).title("Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlong, 14));
+        plotMarker(location);
+        moveCamera(currentLocation, destinationLocation);
     }
 
     @Override
@@ -135,6 +144,19 @@ public class MapFragment extends Fragment implements
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
                     .getMap();
+            mMap.getUiSettings().setZoomControlsEnabled(true);
         }
+    }
+
+    private void plotMarker(Location location) {
+        LatLng latLong = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(latLong).title("Marker").icon(BitmapDescriptorFactory.defaultMarker()));
+    }
+
+    private void moveCamera(Location currentLocation, Location destinationLocation) {
+        int zoomLevel = calculateCameraZoom(currentLocation, destinationLocation);
+        Location location = calculateMidPointLocation(currentLocation, destinationLocation);
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 }
