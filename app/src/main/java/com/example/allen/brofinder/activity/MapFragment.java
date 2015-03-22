@@ -87,7 +87,7 @@ public class MapFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-        plotMarker(destinationLocation);
+        plotDestinationLocation(destinationLocation);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class MapFragment extends Fragment implements
         Log.i("MapsActivity", "Location received: " + location.toString());
         this.currentLocation = location;
         googleApiClient.disconnect();
-        plotMarker(location);
+        plotCurrentLocationMarker(location);
         moveCamera(currentLocation, destinationLocation);
     }
 
@@ -148,9 +148,21 @@ public class MapFragment extends Fragment implements
         }
     }
 
-    private void plotMarker(Location location) {
-        LatLng latLong = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latLong).title("Marker").icon(BitmapDescriptorFactory.defaultMarker()));
+    private void plotCurrentLocationMarker(Location currentLocation) {
+        LatLng latLong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        MarkerOptions marketOptions = new MarkerOptions()
+                .position(latLong)
+                .title("You");
+        mMap.addMarker(marketOptions);
+    }
+
+    private void plotDestinationLocation(Location destinationLocation) {
+        LatLng latLong = new LatLng(destinationLocation.getLatitude(), destinationLocation.getLongitude());
+        MarkerOptions marketOptions = new MarkerOptions()
+                .position(latLong)
+                .title("Destination")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mMap.addMarker(marketOptions);
     }
 
     private void moveCamera(Location currentLocation, Location destinationLocation) {
