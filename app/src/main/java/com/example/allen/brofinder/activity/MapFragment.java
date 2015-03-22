@@ -19,9 +19,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import static com.example.allen.brofinder.support.MapUtils.*;
 
 public class MapFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
@@ -79,8 +78,8 @@ public class MapFragment extends Fragment implements
 
         // Mock destinationLocation
         destinationLocation = new Location("");
-        destinationLocation.setLatitude(32.523616d);
-        destinationLocation.setLongitude(-96.603480d);
+        destinationLocation.setLatitude(34.503184d);
+        destinationLocation.setLongitude(-105.755797d);
     }
 
     @Override
@@ -166,9 +165,12 @@ public class MapFragment extends Fragment implements
     }
 
     private void moveCamera(Location currentLocation, Location destinationLocation) {
-        int zoomLevel = calculateCameraZoom(currentLocation, destinationLocation);
-        Location location = calculateMidPointLocation(currentLocation, destinationLocation);
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+        LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LatLng destinationLatLng = new LatLng(destinationLocation.getLatitude(), destinationLocation.getLongitude());
+        LatLngBounds bounds = LatLngBounds.builder()
+                .include(currentLatLng)
+                .include(destinationLatLng)
+                .build();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
     }
 }
