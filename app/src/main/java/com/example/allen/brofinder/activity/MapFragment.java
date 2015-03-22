@@ -79,8 +79,8 @@ public class MapFragment extends Fragment implements
 
         // Mock destinationLocation
         destinationLocation = new Location("");
-        destinationLocation.setLatitude(29.615831d);
-        destinationLocation.setLongitude(-95.595978d);
+        destinationLocation.setLatitude(32.523616d);
+        destinationLocation.setLongitude(-96.603480d);
     }
 
     @Override

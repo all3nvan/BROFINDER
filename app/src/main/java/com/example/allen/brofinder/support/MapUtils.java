@@ -25,8 +25,10 @@ public class MapUtils {
 
     public static int calculateCameraZoom(Location currentLocation, Location destinationLocation) {
         float distance = currentLocation.distanceTo(destinationLocation);
-        if(distance > 1800f)
-            return 14;
-        return 14;
+        Double zoomLevelDouble = 16.69229236 + (-0.000302288 * distance);
+        Integer zoomLevel = zoomLevelDouble.intValue() - 1;
+        if(zoomLevel < 3)
+            zoomLevel = 3;
+        return zoomLevel;
     }
 }
