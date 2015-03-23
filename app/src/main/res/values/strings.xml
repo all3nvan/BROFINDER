@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">BROFINDER</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_route_map">RouteMapActivity</string>
+    <string name="nav_drawer_open">Nav drawer open</string>
+    <string name="nav_drawer_close">Nav drawer close</string>
+
+    <string-array name="nav_drawer_items_array">
+        <item>Map</item>
+    </string-array>
 </resources>
