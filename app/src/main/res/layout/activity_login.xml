@@ -1,22 +1,52 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.allen.brofinder.activity.LoginActivity">
+<ViewSwitcher
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewSwitcher"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true" >
 
-    <TextView
-        android:id="@+id/derp"
+    <RelativeLayout
+        android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="BROFINDR"
-        android:gravity="center"/>
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="LOADING"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sign_in_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.example.allen.brofinder.activity.LoginActivity">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/derp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="BROFINDR LOGIN"
+            android:gravity="center"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+</ViewSwitcher>

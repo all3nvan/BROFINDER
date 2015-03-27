@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.example.allen.brofinder.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -25,12 +26,14 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     private boolean signInClicked;
     private ConnectionResult connectionResult;
     private boolean intentInProgress;
+    private ViewSwitcher viewSwitcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -49,6 +52,10 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     @Override
     protected void onStop() {
         super.onStop();
+        // TODO: Remove google account for testing
+        Plus.AccountApi.clearDefaultAccount(googleApiClient);
+        Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient);
+
         if(googleApiClient.isConnected())
             googleApiClient.disconnect();
     }
@@ -57,6 +64,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         if (requestCode == RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 signInClicked = false;
+                viewSwitcher.showNext();
             }
 
             intentInProgress = false;
@@ -92,8 +100,14 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("derp", "SIGNED IN YEAHHHHHHH");
+
+        // TODO: Maybe store username here
         Person currentUser = Plus.PeopleApi.getCurrentPerson(googleApiClient);
         ((TextView) findViewById(R.id.derp)).setText(currentUser.getDisplayName());
+
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
     }
 
     @Override
@@ -104,6 +118,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (!intentInProgress) {
+            viewSwitcher.showNext();
             connectionResult = result;
             if (signInClicked) {
                 resolveSignInError();
