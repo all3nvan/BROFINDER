@@ -14,7 +14,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
@@ -25,6 +27,13 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private Location currentLocation;
+    private Location destinationLocation;
+
+    private static final String DESTINATION_LAT_PARAM = "lat";
+    private static final String DESTINATION_LON_PARAM = "lon";
+
+    private float destinationLat;
+    private float destinationLon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +46,19 @@ public class MapsActivity extends FragmentActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        destinationLat = Float.parseFloat(getIntent().getExtras().getString(DESTINATION_LAT_PARAM));
+        destinationLon = Float.parseFloat(getIntent().getExtras().getString(DESTINATION_LON_PARAM));
+        destinationLocation = new Location("");
+        destinationLocation.setLatitude(destinationLat);
+        destinationLocation.setLongitude(destinationLon);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        plotDestinationLocation(destinationLocation);
     }
 
     @Override
@@ -78,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.i("GoogleClientApi", "Connection suspended");
     }
 
     @Override
@@ -86,13 +102,39 @@ public class MapsActivity extends FragmentActivity implements
         Log.i("MapsActivity", "Location received: " + location.toString());
         this.currentLocation = location;
         googleApiClient.disconnect();
-        LatLng latlong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latlong).title("Marker"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlong, 14));
+        plotCurrentLocationMarker(location);
+        moveCamera(currentLocation, destinationLocation);
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("GoogleClientApi", "Connection failed");
+    }
 
+    private void plotCurrentLocationMarker(Location currentLocation) {
+        LatLng latLong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        MarkerOptions marketOptions = new MarkerOptions()
+                .position(latLong)
+                .title("You");
+        mMap.addMarker(marketOptions);
+    }
+
+    private void plotDestinationLocation(Location destinationLocation) {
+        LatLng latLong = new LatLng(destinationLocation.getLatitude(), destinationLocation.getLongitude());
+        MarkerOptions marketOptions = new MarkerOptions()
+                .position(latLong)
+                .title("Destination")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mMap.addMarker(marketOptions);
+    }
+
+    private void moveCamera(Location currentLocation, Location destinationLocation) {
+        LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LatLng destinationLatLng = new LatLng(destinationLocation.getLatitude(), destinationLocation.getLongitude());
+        LatLngBounds bounds = LatLngBounds.builder()
+                .include(currentLatLng)
+                .include(destinationLatLng)
+                .build();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
     }
 }
