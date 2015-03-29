@@ -1,6 +1,7 @@
 package com.example.allen.brofinder.activity;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -44,19 +45,21 @@ public class GcmIntentService extends IntentService {
         notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intentToStart = new Intent(this, MainActivity.class);
+        Intent intentToStart = new Intent(this, MapsActivity.class);
         intentToStart.putExtras(extrasToSend);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intentToStart, 0);
 
-        NotificationCompat.Builder builder =
+        Notification notification =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client)
                         .setContentTitle("BROFINDR")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText("Location received"))
-                        .setContentText("HERPA DERPA");
+                        .setContentText("HERPA DERPA")
+                        .setContentIntent(contentIntent)
+                        .build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
 
-        builder.setContentIntent(contentIntent);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 }
