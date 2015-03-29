@@ -54,7 +54,7 @@ public class GcmIntentService extends IntentService {
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client)
                         .setContentTitle("BROFINDR")
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Location received"))
+                                .bigText("Location received from " + extrasToSend.getString("sender")))
                         .setContentText("HERPA DERPA")
                         .setContentIntent(contentIntent)
                         .build();
