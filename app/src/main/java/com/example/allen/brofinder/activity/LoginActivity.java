@@ -238,7 +238,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         String userMapJson= new GsonBuilder().create().toJson(userMap);
 
         // TODO: Uri for localhost from genymotion
-        String uri = "http://10.0.3.2:8080/register";
+        String uri = AppServerPaths.REGISTER_PATH;
 
         HttpPost request = new HttpPost(uri);
         try {
