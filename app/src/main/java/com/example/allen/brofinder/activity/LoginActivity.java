@@ -22,8 +22,15 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.Plus;
+import com.google.gson.GsonBuilder;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
     private static final String PROPERTY_REG_ID = "registration_id";
@@ -65,7 +72,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     @Override
     protected void onStop() {
         super.onStop();
-        // TODO: Remove google account for testing
+//        TODO: Remove google account for testing
 //        Plus.AccountApi.clearDefaultAccount(googleApiClient);
 //        Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient);
 
@@ -198,12 +205,8 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
                     registrationId = gcm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + registrationId;
 
-                    // You should send the registration ID to your server over HTTP,
-                    // so it can use GCM/HTTP or CCS to send messages to your app.
-                    // The request to your server should be authenticated if your app
-                    // is using accounts.
-                    //sendRegistrationIdToBackend();
-
+                    String accountName = Plus.AccountApi.getAccountName(googleApiClient);
+                    sendRegistrationIdToBackend(accountName, registrationId);
                     storeRegistrationId(getApplicationContext(), registrationId);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
@@ -226,5 +229,24 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
         editor.commit();
+    }
+
+    private void sendRegistrationIdToBackend(String email, String registrationId) {
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("email", email);
+        userMap.put("registrationId", registrationId);
+        String userMapJson= new GsonBuilder().create().toJson(userMap);
+
+        // TODO: Uri for localhost from genymotion
+        String uri = "http://10.0.3.2:8080/register";
+
+        HttpPost request = new HttpPost(uri);
+        try {
+            request.setEntity(new StringEntity(userMapJson));
+            request.setHeader("Content-Type", "application/json");
+            new DefaultHttpClient().execute(request);
+        } catch (Exception e) {
+            Log.i(TAG, e.toString());
+        }
     }
 }
