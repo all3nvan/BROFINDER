@@ -93,7 +93,15 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = null;
         switch(position) {
             case 0:
-                fragment = MapFragment.newInstance("herp", "derp");
+                String destinationLat = "29.588014";
+                String destinationLon = "-95.620474";
+                if (getIntent().hasExtra("lat")) {
+                    destinationLat = getIntent().getExtras().getString("lat");
+                }
+                if (getIntent().hasExtra("lon")) {
+                    destinationLon = getIntent().getExtras().getString("lon");
+                }
+                fragment = MapFragment.newInstance(destinationLat, destinationLon);
                 break;
         }
         if(fragment != null) {

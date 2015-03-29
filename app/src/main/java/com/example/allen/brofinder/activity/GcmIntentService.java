@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -30,23 +29,24 @@ public class GcmIntentService extends IntentService {
 
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                Log.i(TAG, "Error: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " + extras.toString());
+                Log.i(TAG, "Received: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                sendNotification("Received: " + extras.toString());
+                sendNotification(extras);
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg) {
+    private void sendNotification(Bundle extrasToSend) {
         notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        Intent intentToStart = new Intent(this, MainActivity.class);
+        intentToStart.putExtras(extrasToSend);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intentToStart, 0);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
