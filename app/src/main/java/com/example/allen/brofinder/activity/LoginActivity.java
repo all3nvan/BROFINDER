@@ -206,7 +206,8 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
                     msg = "Device registered, registration ID=" + registrationId;
 
                     String accountName = Plus.AccountApi.getAccountName(googleApiClient);
-                    sendRegistrationIdToBackend(accountName, registrationId);
+                    String displayName = Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
+                    sendRegistrationIdToBackend(accountName, registrationId, displayName);
                     storeRegistrationId(getApplicationContext(), registrationId);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
@@ -231,10 +232,11 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         editor.commit();
     }
 
-    private void sendRegistrationIdToBackend(String email, String registrationId) {
+    private void sendRegistrationIdToBackend(String email, String registrationId, String displayName) {
         Map<String, String> userMap = new HashMap<>();
         userMap.put("email", email);
         userMap.put("registrationId", registrationId);
+        userMap.put("displayName", displayName);
         String userMapJson= new GsonBuilder().create().toJson(userMap);
 
         // TODO: Uri for localhost from genymotion
