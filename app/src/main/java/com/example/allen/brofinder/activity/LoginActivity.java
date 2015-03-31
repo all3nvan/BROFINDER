@@ -14,7 +14,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ViewSwitcher;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
+import com.example.allen.brofinder.support.RestClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,15 +27,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.GsonBuilder;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
     private static final String PROPERTY_REG_ID = "registration_id";
@@ -72,10 +73,6 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     @Override
     protected void onStop() {
         super.onStop();
-//        TODO: Remove google account for testing
-//        Plus.AccountApi.clearDefaultAccount(googleApiClient);
-//        Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient);
-
         if(googleApiClient.isConnected())
             googleApiClient.disconnect();
     }
@@ -97,7 +94,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i("derp", "SIGNED IN YEAHHHHHHH");
+        Log.i(TAG, "SIGNED IN YEAHHHHHHH");
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationId = getRegistrationId(this);
@@ -197,7 +194,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
+                String msg;
                 try {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
@@ -217,7 +214,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
 
             @Override
             protected void onPostExecute(String msg) {
-                Log.i(TAG, "HERP DERP");
+                Log.i(TAG, msg);
             }
         }.execute(null, null, null);
     }
@@ -233,22 +230,27 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     }
 
     private void sendRegistrationIdToBackend(String email, String registrationId, String displayName) {
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("email", email);
-        userMap.put("registrationId", registrationId);
-        userMap.put("displayName", displayName);
-        String userMapJson= new GsonBuilder().create().toJson(userMap);
-
-        // TODO: Uri for localhost from genymotion
-        String uri = AppServerPaths.REGISTER_PATH;
-
-        HttpPost request = new HttpPost(uri);
+        JSONObject jsonObject = new JSONObject();
         try {
-            request.setEntity(new StringEntity(userMapJson));
-            request.setHeader("Content-Type", "application/json");
-            new DefaultHttpClient().execute(request);
-        } catch (Exception e) {
-            Log.i(TAG, e.toString());
+            jsonObject.put("email", email);
+            jsonObject.put("registrationId", registrationId);
+            jsonObject.put("displayName", displayName);
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creating json request: " + e.toString());
         }
+        JsonObjectRequest request
+                = new JsonObjectRequest(Request.Method.POST, AppServerPaths.REGISTER_PATH, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i(TAG, "Successful volley response: " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error during volley request: " + error.toString());
+            }
+        });
+        RestClient.getInstance(this.getApplicationContext()).addToRequestQueue(request);
     }
 }
