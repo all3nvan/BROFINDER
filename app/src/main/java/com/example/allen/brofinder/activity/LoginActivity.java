@@ -35,6 +35,7 @@ import java.io.IOException;
 
 public class LoginActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
     private static final String PROPERTY_REG_ID = "registration_id";
+    private static final String PROPERTY_DISPLAY_NAME = "display_name";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String SENDER_ID = "1026788982313";
@@ -205,9 +206,9 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
                     String accountName = Plus.AccountApi.getAccountName(googleApiClient);
                     String displayName = Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
                     sendRegistrationIdToBackend(accountName, registrationId, displayName);
-                    storeRegistrationId(getApplicationContext(), registrationId);
+                    storeGcmData(getApplicationContext(), registrationId, displayName);
                 } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
+                    msg = "Error registering:" + ex.getMessage();
                 }
                 return msg;
             }
@@ -219,13 +220,14 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         }.execute(null, null, null);
     }
 
-    private void storeRegistrationId(Context context, String regId) {
+    private void storeGcmData(Context context, String regId, String displayName) {
         final SharedPreferences prefs = getGCMPreferences();
         int appVersion = getAppVersion(context);
         Log.i(TAG, "Saving regId on app version " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
+        editor.putString(PROPERTY_DISPLAY_NAME, displayName);
         editor.commit();
     }
 
