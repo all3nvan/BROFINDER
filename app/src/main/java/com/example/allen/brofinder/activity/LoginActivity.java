@@ -205,8 +205,8 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
 
                     String accountName = Plus.AccountApi.getAccountName(googleApiClient);
                     String displayName = Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
-                    sendRegistrationIdToBackend(accountName, registrationId, displayName);
-                    storeGcmData(getApplicationContext(), registrationId, displayName);
+                    sendRegistrationToBackend(accountName, registrationId, displayName);
+                    storeRegistrationData(getApplicationContext(), registrationId, displayName);
                 } catch (IOException ex) {
                     msg = "Error registering:" + ex.getMessage();
                 }
@@ -220,7 +220,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         }.execute(null, null, null);
     }
 
-    private void storeGcmData(Context context, String regId, String displayName) {
+    private void storeRegistrationData(Context context, String regId, String displayName) {
         final SharedPreferences prefs = getGCMPreferences();
         int appVersion = getAppVersion(context);
         Log.i(TAG, "Saving regId on app version " + appVersion);
@@ -231,7 +231,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         editor.commit();
     }
 
-    private void sendRegistrationIdToBackend(String email, String registrationId, String displayName) {
+    private void sendRegistrationToBackend(String email, String registrationId, String displayName) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);
