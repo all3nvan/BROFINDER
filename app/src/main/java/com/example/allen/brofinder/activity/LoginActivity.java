@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.support.RestClient;
+import com.example.allen.brofinder.support.UriBuilder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -241,7 +242,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
             Log.e(TAG, "Error creating json request: " + e.toString());
         }
         JsonObjectRequest request
-                = new JsonObjectRequest(Request.Method.POST, AppServerPaths.REGISTER_PATH, jsonObject, new Response.Listener<JSONObject>() {
+                = new JsonObjectRequest(Request.Method.POST, UriBuilder.generateRegisterPath(), jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.i(TAG, "Successful volley response: " + response.toString());
