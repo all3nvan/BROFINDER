@@ -10,21 +10,23 @@ public final class UriBuilder {
     private static final String FRIEND_PATH = "friends";
 
     public static String generateRegisterPath() {
-        return new Uri.Builder()
-                .scheme(SCHEME)
-                .encodedAuthority(AUTHORITY)
+        return generateBaseUri()
                 .appendPath(REGISTER_PATH)
                 .build()
                 .toString();
     }
 
     public static String generateFindFriendsPath(String userEmail) {
-        return new Uri.Builder()
-                .scheme(SCHEME)
-                .encodedAuthority(AUTHORITY)
+        return generateBaseUri()
                 .appendPath(FRIEND_PATH)
                 .appendEncodedPath(userEmail)
                 .build()
                 .toString();
+    }
+
+    private static Uri.Builder generateBaseUri() {
+        return new Uri.Builder()
+                .scheme(SCHEME)
+                .encodedAuthority(AUTHORITY);
     }
 }
