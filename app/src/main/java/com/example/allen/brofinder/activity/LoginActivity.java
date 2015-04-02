@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
+import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,11 +36,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class LoginActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
-    private static final String PROPERTY_REG_ID = "registration_id";
-    private static final String PROPERTY_DISPLAY_NAME = "display_name";
-    private static final String PROPERTY_APP_VERSION = "appVersion";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String SENDER_ID = "1026788982313";
     private static final String TAG = "LoginActivity";
     private GoogleCloudMessaging gcm;
     private String registrationId;
@@ -164,13 +161,13 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
 
     private String getRegistrationId(Context context) {
         final SharedPreferences prefs = getGCMPreferences();
-        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+        String registrationId = prefs.getString(Constants.SHARED_PREFERENCES_PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
             Log.i(TAG, "Registration not found.");
             return "";
         }
 
-        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int registeredVersion = prefs.getInt(Constants.SHARED_PREFERENCES_PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
             Log.i(TAG, "App version changed.");
@@ -180,7 +177,7 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     }
 
     private SharedPreferences getGCMPreferences() {
-        return getSharedPreferences(LoginActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+        return getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     private static int getAppVersion(Context context) {
@@ -201,13 +198,13 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
-                    registrationId = gcm.register(SENDER_ID);
+                    registrationId = gcm.register(Constants.GCM_SENDER_ID);
                     msg = "Device registered, registration ID=" + registrationId;
 
-                    String accountName = Plus.AccountApi.getAccountName(googleApiClient);
+                    String accountEmail = Plus.AccountApi.getAccountName(googleApiClient);
                     String displayName = Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
-                    sendRegistrationToBackend(accountName, registrationId, displayName);
-                    storeRegistrationData(getApplicationContext(), registrationId, displayName);
+                    sendRegistrationToBackend(accountEmail, registrationId, displayName);
+                    storeRegistrationData(getApplicationContext(), registrationId, displayName, accountEmail);
                 } catch (IOException ex) {
                     msg = "Error registering:" + ex.getMessage();
                 }
@@ -221,14 +218,15 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
         }.execute(null, null, null);
     }
 
-    private void storeRegistrationData(Context context, String regId, String displayName) {
+    private void storeRegistrationData(Context context, String regId, String displayName, String accountName) {
         final SharedPreferences prefs = getGCMPreferences();
         int appVersion = getAppVersion(context);
         Log.i(TAG, "Saving regId on app version " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, regId);
-        editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.putString(PROPERTY_DISPLAY_NAME, displayName);
+        editor.putString(Constants.SHARED_PREFERENCES_PROPERTY_REG_ID, regId);
+        editor.putInt(Constants.SHARED_PREFERENCES_PROPERTY_APP_VERSION, appVersion);
+        editor.putString(Constants.SHARED_PREFERENCES_PROPERTY_DISPLAY_NAME, displayName);
+        editor.putString(Constants.SHARED_PREFERENCES_PROPERTY_ACCOUNT_EMAIL, accountName);
         editor.commit();
     }
 
