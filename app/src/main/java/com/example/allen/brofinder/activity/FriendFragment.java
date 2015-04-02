@@ -1,5 +1,7 @@
 package com.example.allen.brofinder.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
+import com.example.allen.brofinder.adapter.factory.UserFactory;
+import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
 
@@ -26,6 +30,7 @@ import java.util.Map;
 public class FriendFragment extends Fragment {
     private final static String TAG = "FriendFragment";
     private ListView friendListView;
+    private UserFactory userFactory;
 
     public static FriendFragment newInstance() {
         FriendFragment friendFragment = new FriendFragment();
@@ -35,7 +40,8 @@ public class FriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        retrieveFriends("bryant.ubuntu@gmail.com");
+        userFactory = new UserFactory();
+        retrieveFriends(getAccountEmail());
     }
 
     @Override
@@ -60,5 +66,13 @@ public class FriendFragment extends Fragment {
             }
         });
         RestClient.getInstance(getActivity().getApplicationContext()).addToRequestQueue(request);
+    }
+
+    private SharedPreferences getGCMPreferences() {
+        return getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    private String getAccountEmail() {
+        return getGCMPreferences().getString(Constants.SHARED_PREFERENCES_PROPERTY_ACCOUNT_EMAIL, "");
     }
 }
