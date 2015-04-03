@@ -32,28 +32,17 @@ public class MapFragment extends Fragment implements
     private Location currentLocation;
     private Location destinationLocation;
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String DESTINATION_LAT_PARAM = "destinationLat";
+    private static final String DESTINATION_LON_PARAM = "destinationLon";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private float destinationLat;
+    private float destinationLon;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    public static MapFragment newInstance(String destinationLat, String destinationLon) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(DESTINATION_LAT_PARAM, destinationLat);
+        args.putString(DESTINATION_LON_PARAM, destinationLon);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +55,8 @@ public class MapFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            destinationLat = Float.parseFloat(getArguments().getString(DESTINATION_LAT_PARAM));
+            destinationLon = Float.parseFloat(getArguments().getString(DESTINATION_LON_PARAM));
         }
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -78,8 +67,8 @@ public class MapFragment extends Fragment implements
 
         // Mock destinationLocation
         destinationLocation = new Location("");
-        destinationLocation.setLatitude(34.503184d);
-        destinationLocation.setLongitude(-105.755797d);
+        destinationLocation.setLatitude(destinationLat);
+        destinationLocation.setLongitude(destinationLon);
     }
 
     @Override
@@ -102,9 +91,7 @@ public class MapFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
