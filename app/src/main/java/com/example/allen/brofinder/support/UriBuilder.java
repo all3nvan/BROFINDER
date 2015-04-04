@@ -7,7 +7,7 @@ public final class UriBuilder {
     private static final String AUTHORITY = "104.131.112.87:3000";
 
     private static final String REGISTER_PATH = "users";
-    private static final String FRIEND_PATH = "friends";
+    private static final String FRIEND_PATH = "relationships";
 
     public static String generateRegisterPath() {
         return generateBaseUri()
@@ -16,10 +16,10 @@ public final class UriBuilder {
                 .toString();
     }
 
-    public static String generateFindFriendsPath(String userEmail) {
+    public static String generateFindFriendsPath() {
         return generateBaseUri()
                 .appendPath(FRIEND_PATH)
-                .appendEncodedPath(userEmail)
+                .appendEncodedPath("all")
                 .build()
                 .toString();
     }
