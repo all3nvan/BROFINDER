@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
         List<DrawerItem> drawerItemList = new ArrayList<>();
         drawerItemList.add(new DrawerItem(actionBarTitles[0]));
         drawerItemList.add(new DrawerItem(actionBarTitles[1]));
+        drawerItemList.add(new DrawerItem(actionBarTitles[2]));
         DrawerItemArrayAdapter adapter = new DrawerItemArrayAdapter(this, R.layout.listview_nav_drawer_item_row, drawerItemList);
         drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
