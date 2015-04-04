@@ -22,9 +22,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.adapter.factory.UserFactory;
+import com.example.allen.brofinder.domain.LocationSession;
 import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.Constants;
+import com.example.allen.brofinder.support.LocationSessionItemArrayAdapter;
 import com.example.allen.brofinder.support.RestClient;
+import com.example.allen.brofinder.support.SessionCache;
 import com.example.allen.brofinder.support.UriBuilder;
 import com.example.allen.brofinder.support.UserArrayAdapter;
 
@@ -44,6 +47,7 @@ public class AddFriendFragment extends Fragment {
     private EditText searchTextBox;
     private UserArrayAdapter searchResultArrayAdapter;
     private List<User> searchResults;
+    private SessionCache sessionCache;
 
     public static AddFriendFragment newInstance() {
         return new AddFriendFragment();
@@ -52,6 +56,7 @@ public class AddFriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionCache = new SessionCache(getActivity().getApplicationContext());
     }
 
     @Override
@@ -88,10 +93,10 @@ public class AddFriendFragment extends Fragment {
 
             }
         });
-        List<User> recentUserList = mockUserList();
-        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
+        List<LocationSession> recentUserList = sessionCache.getSessionHistory();
+        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
         recentListView.setAdapter(adapter);
-        //recentListView.setOnItemClickListener(new ListViewClickListener());
+        recentListView.setOnItemClickListener(new ListViewClickListener());
 
         resultsListView.setOnItemClickListener(new ListViewClickListener());
         return view;

@@ -14,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.adapter.factory.UserFactory;
 import com.example.allen.brofinder.domain.User;
@@ -22,7 +21,6 @@ import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
 import com.example.allen.brofinder.support.UserArrayAdapter;
-import com.example.allen.brofinder.support.UserItemArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

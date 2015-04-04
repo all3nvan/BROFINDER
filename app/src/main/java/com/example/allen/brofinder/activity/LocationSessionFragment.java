@@ -55,10 +55,13 @@ public class LocationSessionFragment extends Fragment {
         Log.d(TAG, "In onCreateView");
         View view = inflater.inflate(R.layout.fragment_location_session, container, false);
         locationSessionView = (ListView) view.findViewById(R.id.location_session_listview);
-        testLocationSessionList = testRetrieveLocationSession();
-        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, testLocationSessionList);
-        locationSessionView.setAdapter(adapter);
         locationSessionView.setOnItemClickListener(new ListViewClickListener());
+
+        //TODO BE TAKEN OUT WHEN ENDPOINT IS IN PLACE
+//        testLocationSessionList = testRetrieveLocationSession();
+//        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, testLocationSessionList);
+//        locationSessionView.setAdapter(adapter);
+
         Log.d(TAG, "finished onCreateView");
         return view;
 
@@ -102,16 +105,11 @@ public class LocationSessionFragment extends Fragment {
             bundle.putFloat("long", locationSession.getLongitude());
 
             intent.putExtras(bundle);
-//            bundle.putFloat("lat", 1.23423f);
-//            bundle.putFloat("long", 1.7777f);
-
 
             startActivity(intent);
 
         }
     }
-
-
 
     private SharedPreferences getGCMPreferences() {
         return getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
