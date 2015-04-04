@@ -7,5 +7,8 @@ public final class Constants {
     public static final String SHARED_PREFERENCES_PROPERTY_ACCOUNT_EMAIL = "account_email";
     public static final String SHARED_PREFERENCES_PROPERTY_APP_VERSION = "appVersion";
 
+    public static final String SHARED_PREFERENCES_SESSION_NAME = "session_history";
+    public static final String SHARED_PREFERENCES_PROPERTY_SESSION_LIST = "sessions";
+
     public static final String GCM_SENDER_ID = "1026788982313";
 }
