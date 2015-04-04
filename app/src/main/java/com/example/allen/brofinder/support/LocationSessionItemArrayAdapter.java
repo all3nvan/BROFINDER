@@ -18,6 +18,12 @@ import java.util.List;
 
 public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSession>{
 
+    private static class ViewHolder{
+        private TextView name;
+        private TextView latitude;
+        private TextView longitude;
+    }
+
     Context mContext;
     int layoutResourceId;
     List<LocationSession> data = null;
@@ -31,18 +37,37 @@ public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSessio
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        ViewHolder viewHolder;
+        LocationSession locationSessionObj = data.get(position);
 
         if (convertView == null){
+            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
+            viewHolder = new ViewHolder();
+            TextView textViewName = (TextView) convertView.findViewById(R.id.location_session_item_name);
+            TextView textViewLatitude = (TextView) convertView.findViewById(R.id.location_session_item_latitude);
+            TextView textViewLongitude = (TextView) convertView.findViewById(R.id.location_session_item_longitude);
+
+            textViewName.setText(locationSessionObj.getSenderName());
+            textViewLatitude.setText(((Float)locationSessionObj.getLatitude()).toString());
+            textViewLongitude.setText(((Float)locationSessionObj.getLongitude()).toString());
+
         }
 
-        TextView textViewName = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
-        LocationSession locationSessionObj = data.get(position);
-        textViewName.setText(locationSessionObj.getSenderName());
+        else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.name.setText(locationSessionObj.getSenderName());
+        viewHolder.latitude.setText(((Float)locationSessionObj.getLatitude()).toString());
+        viewHolder.longitude.setText(((Float)locationSessionObj.getLongitude()).toString());
+
+
 
         return convertView;
     }
+
+
 
 
 }

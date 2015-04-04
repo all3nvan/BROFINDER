@@ -12,9 +12,14 @@ import android.widget.TextView;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.domain.User;
 
+
 import java.util.List;
 
 public class UserItemArrayAdapter extends ArrayAdapter<User>{
+
+    private static class ViewHolder{
+        private TextView name;
+    }
 
     Context mContext;
     int layoutResourceId;
@@ -29,15 +34,23 @@ public class UserItemArrayAdapter extends ArrayAdapter<User>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        User userObj = data.get(position);
+
+        ViewHolder viewHolder = new ViewHolder();
 
         if (convertView == null){
+            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
+            viewHolder = new ViewHolder();
+            TextView textViewName = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
+            textViewName.setText(userObj.getDisplayName());
         }
 
-        TextView textViewName = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
-        User userObj = data.get(position);
-        textViewName.setText(userObj.getDisplayName());
+        else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.name.setText(userObj.getDisplayName());
 
         return convertView;
     }
