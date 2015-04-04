@@ -88,13 +88,7 @@ public class SessionConfirmationActivity extends ActionBarActivity  implements
                 RestClient.getInstance(getApplicationContext()).addToRequestQueue(request);
             }
         });
-
-
-
-
     }
-
-
 
     @Override
     public void onConnected(Bundle bundle) {
