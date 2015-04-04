@@ -21,6 +21,7 @@ import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
+import com.example.allen.brofinder.support.UserArrayAdapter;
 import com.example.allen.brofinder.support.UserItemArrayAdapter;
 
 import org.json.JSONArray;
@@ -67,7 +68,7 @@ public class FriendFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
         friendListView = (ListView) view.findViewById(R.id.friend_listview);
         List<User> friends = testRetrieveFriends();
-        UserItemArrayAdapter adapter = new UserItemArrayAdapter(getActivity(), R.layout.listview_nav_drawer_item_row, friends);
+        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, friends);
         friendListView.setAdapter(adapter);
         return view;
     }
