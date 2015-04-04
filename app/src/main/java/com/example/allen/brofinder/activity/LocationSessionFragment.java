@@ -1,6 +1,7 @@
 package com.example.allen.brofinder.activity;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -33,10 +34,13 @@ public class LocationSessionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        Log.d(TAG, "In onCreateView");
         View view = inflater.inflate(R.layout.fragment_location_session, container, false);
         locationSessionView = (ListView) view.findViewById(R.id.location_session_listview);
         List<LocationSession> locationSessions = testRetrieveLocationSession();
         LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, locationSessions);
+        locationSessionView.setAdapter(adapter);
+        Log.d(TAG, "finished onCreateView");
         return view;
 
     }

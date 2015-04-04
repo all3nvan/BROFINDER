@@ -19,9 +19,9 @@ import java.util.List;
 public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSession>{
 
     private static class ViewHolder{
-        private TextView name;
-        private TextView latitude;
-        private TextView longitude;
+        TextView name;
+        TextView latitude;
+        TextView longitude;
     }
 
     Context mContext;
@@ -44,14 +44,11 @@ public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSessio
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
             viewHolder = new ViewHolder();
-            TextView textViewName = (TextView) convertView.findViewById(R.id.location_session_item_name);
-            TextView textViewLatitude = (TextView) convertView.findViewById(R.id.location_session_item_latitude);
-            TextView textViewLongitude = (TextView) convertView.findViewById(R.id.location_session_item_longitude);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.location_session_item_name);
+            viewHolder.latitude = (TextView) convertView.findViewById(R.id.location_session_item_latitude);
+            viewHolder.longitude = (TextView) convertView.findViewById(R.id.location_session_item_longitude);
 
-            textViewName.setText(locationSessionObj.getSenderName());
-            textViewLatitude.setText(((Float)locationSessionObj.getLatitude()).toString());
-            textViewLongitude.setText(((Float)locationSessionObj.getLongitude()).toString());
-
+            convertView.setTag(viewHolder);
         }
 
         else{

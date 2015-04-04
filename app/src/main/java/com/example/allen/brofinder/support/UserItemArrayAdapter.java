@@ -18,7 +18,7 @@ import java.util.List;
 public class UserItemArrayAdapter extends ArrayAdapter<User>{
 
     private static class ViewHolder{
-        private TextView name;
+        TextView name;
     }
 
     Context mContext;
@@ -36,14 +36,14 @@ public class UserItemArrayAdapter extends ArrayAdapter<User>{
     public View getView(int position, View convertView, ViewGroup parent){
         User userObj = data.get(position);
 
-        ViewHolder viewHolder = new ViewHolder();
+        ViewHolder viewHolder;
 
         if (convertView == null){
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
             viewHolder = new ViewHolder();
-            TextView textViewName = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
-            textViewName.setText(userObj.getDisplayName());
+            viewHolder.name = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
+            convertView.setTag(viewHolder);
         }
 
         else{

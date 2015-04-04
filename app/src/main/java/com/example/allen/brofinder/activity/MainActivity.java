@@ -110,6 +110,9 @@ public class MainActivity extends ActionBarActivity {
             case 1:
                 fragment = FriendFragment.newInstance();
                 break;
+            case 2:
+                fragment = LocationSessionFragment.newInstance();
+                break;
         }
         if(fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
