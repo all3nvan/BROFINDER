@@ -42,6 +42,7 @@ public class AddFriendFragment extends Fragment {
         searchListView = (ListView) view.findViewById(R.id.search_friend_listview);
         searchTextBox = (EditText) view.findViewById(R.id.search_box);
         searchTextBox.addTextChangedListener(new TextWatcher() {
+            boolean isOnDefaultView = true;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -49,7 +50,14 @@ public class AddFriendFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewSwitcher.showNext();
+                if (s.length() != 0 && isOnDefaultView) {
+                    viewSwitcher.showNext();
+                    isOnDefaultView = false;
+                }
+                if (s.length() == 0 && !isOnDefaultView) {
+                    viewSwitcher.showNext();
+                    isOnDefaultView = true;
+                }
             }
 
             @Override
@@ -68,6 +76,7 @@ public class AddFriendFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
             Log.i(TAG, "CLICKED: " + position);
+            //Start intent to send location here
         }
     }
 
