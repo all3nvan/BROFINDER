@@ -2,12 +2,16 @@ package com.example.allen.brofinder.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ViewSwitcher;
 
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.domain.User;
@@ -19,6 +23,8 @@ import java.util.List;
 public class AddFriendFragment extends Fragment {
     private static final String TAG = "AddFriendFragment";
     private ListView searchListView;
+    private ViewSwitcher viewSwitcher;
+    private EditText searchTextBox;
 
     public static AddFriendFragment newInstance() {
         return new AddFriendFragment();
@@ -31,8 +37,26 @@ public class AddFriendFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_friend, container, false);
+        final View view = inflater.inflate(R.layout.fragment_add_friend, container, false);
+        viewSwitcher = (ViewSwitcher) view.findViewById(R.id.friend_search_viewswitcher);
         searchListView = (ListView) view.findViewById(R.id.search_friend_listview);
+        searchTextBox = (EditText) view.findViewById(R.id.search_box);
+        searchTextBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                viewSwitcher.showNext();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         List<User> userList = mockUserList();
         UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, userList);
         searchListView.setAdapter(adapter);
