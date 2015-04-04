@@ -35,8 +35,8 @@ public class MapFragment extends Fragment implements
     private static final String DESTINATION_LAT_PARAM = "destinationLat";
     private static final String DESTINATION_LON_PARAM = "destinationLon";
 
-    private float destinationLat;
-    private float destinationLon;
+    private double destinationLat;
+    private double destinationLon;
 
     public static MapFragment newInstance(String destinationLat, String destinationLon) {
         MapFragment fragment = new MapFragment();

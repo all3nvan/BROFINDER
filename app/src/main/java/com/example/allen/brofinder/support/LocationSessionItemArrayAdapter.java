@@ -56,8 +56,8 @@ public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSessio
         }
 
         viewHolder.name.setText(locationSessionObj.getSenderName());
-        viewHolder.latitude.setText(((Float)locationSessionObj.getLatitude()).toString());
-        viewHolder.longitude.setText(((Float)locationSessionObj.getLongitude()).toString());
+        viewHolder.latitude.setText(((Double)locationSessionObj.getLatitude()).toString());
+        viewHolder.longitude.setText(((Double)locationSessionObj.getLongitude()).toString());
 
 
 
