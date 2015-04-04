@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.adapter.factory.UserFactory;
+import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
@@ -24,8 +25,11 @@ import com.example.allen.brofinder.support.UriBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.List;
 
 public class FriendFragment extends Fragment {
     private final static String TAG = "FriendFragment";
@@ -41,8 +45,21 @@ public class FriendFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userFactory = new UserFactory();
-        retrieveFriends(getAccountEmail());
+        testRetrieveFriends();
+        //retrieveFriends(getAccountEmail());
     }
+
+    //test method to return friends
+    private List<User> testRetrieveFriends(){
+        List<User> userList = new ArrayList<User>();
+
+        userList.add(1234, new User("bryant", "test_email@test.com"));
+        userList.add(111, new User("daniel", "daniel_email@test.com"));
+        userList.add(12, new User("allen", "allen_email@test.com"));
+
+        return userList;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

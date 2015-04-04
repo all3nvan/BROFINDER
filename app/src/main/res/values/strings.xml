@@ -12,6 +12,7 @@
     <string-array name="nav_drawer_items_array">
         <item>Map</item>
         <item>Friends</item>
+
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
 </resources>
