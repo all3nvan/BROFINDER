@@ -20,6 +20,7 @@ import com.example.allen.brofinder.support.UriBuilder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
@@ -97,20 +98,12 @@ public class SessionConfirmationActivity extends ActionBarActivity  implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(2000);
 
-        if (location == null){
-            Log.i(TAG, "Location first time baby");
-        }
-
-        else{
-            handleNewLocation(location);
-        }
-    }
-
-    private void handleNewLocation(Location location){
-        Log.d(TAG, location.toString());
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
     }
 
     @Override
@@ -122,10 +115,7 @@ public class SessionConfirmationActivity extends ActionBarActivity  implements
     public void onLocationChanged(Location location) {
         Log.i(TAG, "Location changed: " + location.toString());
         this.currentLocation = location;
-
-
         mGoogleApiClient.disconnect();
-
     }
 
     @Override
