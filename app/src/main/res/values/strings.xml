@@ -10,11 +10,8 @@
     <string name="nav_drawer_close">Nav drawer close</string>
 
     <string-array name="nav_drawer_items_array">
-        <item>Map</item>
-        <item>Friends</item>
-        <item>Friends Locations</item>
-        <item>Add Friends</item>
-
+        <item>Location Sessions</item>
+        <item>Send Location</item>
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
 </resources>

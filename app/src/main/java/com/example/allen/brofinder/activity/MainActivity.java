@@ -25,8 +25,6 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle drawerToggle;
     private String[] actionBarTitles;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +38,6 @@ public class MainActivity extends ActionBarActivity {
         List<DrawerItem> drawerItemList = new ArrayList<>();
         drawerItemList.add(new DrawerItem(actionBarTitles[0]));
         drawerItemList.add(new DrawerItem(actionBarTitles[1]));
-        drawerItemList.add(new DrawerItem(actionBarTitles[2]));
-        drawerItemList.add(new DrawerItem(actionBarTitles[3]));
         DrawerItemArrayAdapter adapter = new DrawerItemArrayAdapter(this, R.layout.listview_nav_drawer_item_row, drawerItemList);
         drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -52,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        //selectDrawerItem(0);
+        selectDrawerItem(0);
     }
 
     @Override
@@ -98,23 +94,9 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = null;
         switch(position) {
             case 0:
-                String destinationLat = "29.588014";
-                String destinationLon = "-95.620474";
-                if (getIntent().hasExtra("lat")) {
-                    destinationLat = getIntent().getExtras().getString("lat");
-                }
-                if (getIntent().hasExtra("lon")) {
-                    destinationLon = getIntent().getExtras().getString("lon");
-                }
-                fragment = MapFragment.newInstance(destinationLat, destinationLon);
-                break;
-            case 1:
-                fragment = FriendFragment.newInstance();
-                break;
-            case 2:
                 fragment = LocationSessionFragment.newInstance();
                 break;
-            case 3:
+            case 1:
                 fragment = AddFriendFragment.newInstance();
                 break;
         }
