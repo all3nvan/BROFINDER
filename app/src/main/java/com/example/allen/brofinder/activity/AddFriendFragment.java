@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class AddFriendFragment extends Fragment {
     private static final String TAG = "AddFriendFragment";
-    private ListView searchListView;
+    private ListView recentListView;
     private ListView resultsListView;
     private ViewSwitcher viewSwitcher;
     private EditText searchTextBox;
@@ -58,7 +58,7 @@ public class AddFriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_friend, container, false);
         viewSwitcher = (ViewSwitcher) view.findViewById(R.id.friend_search_viewswitcher);
-        searchListView = (ListView) view.findViewById(R.id.search_friend_listview);
+        recentListView = (ListView) view.findViewById(R.id.search_friend_listview);
         resultsListView = (ListView) view.findViewById(R.id.results_listview);
         searchTextBox = (EditText) view.findViewById(R.id.search_box);
         searchTextBox.addTextChangedListener(new TextWatcher() {
@@ -90,8 +90,10 @@ public class AddFriendFragment extends Fragment {
         });
         List<User> recentUserList = mockUserList();
         UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
-        searchListView.setAdapter(adapter);
-        searchListView.setOnItemClickListener(new ListViewClickListener());
+        recentListView.setAdapter(adapter);
+        //recentListView.setOnItemClickListener(new ListViewClickListener());
+
+        resultsListView.setOnItemClickListener(new ListViewClickListener());
         return view;
     }
 
