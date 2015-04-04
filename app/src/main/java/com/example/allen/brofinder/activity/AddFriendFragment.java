@@ -41,7 +41,6 @@ public class AddFriendFragment extends Fragment {
     private UserArrayAdapter searchResultArrayAdapter;
     private List<User> searchResults;
 
-
     public static AddFriendFragment newInstance() {
         return new AddFriendFragment();
     }
@@ -75,7 +74,9 @@ public class AddFriendFragment extends Fragment {
                     viewSwitcher.showNext();
                     isOnDefaultView = true;
                 }
-                searchForUser(searchInput.toString());
+                if (searchInput.length() != 0 && !isOnDefaultView) {
+                    searchForUser(searchInput.toString());
+                }
             }
 
             @Override
@@ -107,20 +108,17 @@ public class AddFriendFragment extends Fragment {
 
     private void searchForUser(final String email) {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("account_name", email);
+        paramMap.put("display_name", email);
 
         JSONObject jsonObject = new JSONObject(paramMap);
         JsonArrayRequest request
-                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateFindFriendsPath(), jsonObject, new Response.Listener<JSONArray>() {
+                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateSearchUserPath(), jsonObject, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.i(TAG, "Successful volley response: " + response.toString());
                 searchResults = UserFactory.createUserListFrom(response);
-                if (searchResultArrayAdapter == null) {
-                    searchResultArrayAdapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, searchResults);
-                    resultsListView.setAdapter(searchResultArrayAdapter);
-                }
-                searchResultArrayAdapter.notifyDataSetChanged();
+                searchResultArrayAdapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, searchResults);
+                resultsListView.setAdapter(searchResultArrayAdapter);
             }
         }, new Response.ErrorListener() {
 
