@@ -1,12 +1,9 @@
 package com.example.allen.brofinder.activity;
 
-import android.app.DownloadManager;
 import android.location.Location;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -64,7 +61,7 @@ public class SessionConfirmationActivity extends ActionBarActivity  implements
                 //Send lat and long to backend here
                 String latitude = ((Double)currentLocation.getLatitude()).toString();
                 String longitude = ((Double)currentLocation.getLongitude()).toString();
-                Map<String, String> paramMap = new HashMap<String, String>();
+                Map<String, String> paramMap = new HashMap<>();
                 paramMap.put("account_name", senderEmail);
                 paramMap.put("receiver_name", receiverEmail);
                 paramMap.put("latitude", latitude);
