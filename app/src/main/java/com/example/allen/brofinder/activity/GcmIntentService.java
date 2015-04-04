@@ -54,8 +54,7 @@ public class GcmIntentService extends IntentService {
                         .setSmallIcon(R.drawable.ic_plusone_small_off_client)
                         .setContentTitle("BROFINDR")
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Location received from " + extrasToSend.getString("sender")))
-                        .setContentText("HERPA DERPA")
+                                .bigText("Location received from " + extrasToSend.getString("display_name")))
                         .setContentIntent(contentIntent)
                         .build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
