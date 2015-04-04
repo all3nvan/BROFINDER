@@ -36,7 +36,7 @@ import java.util.List;
 public class FriendFragment extends Fragment {
     private final static String TAG = "FriendFragment";
     private ListView friendListView;
-    private UserFactory userFactory;
+    private List<User> friendList;
 
     public static FriendFragment newInstance() {
         FriendFragment friendFragment = new FriendFragment();
@@ -46,7 +46,6 @@ public class FriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userFactory = new UserFactory();
 
         retrieveFriends(getAccountEmail());
     }
@@ -74,11 +73,17 @@ public class FriendFragment extends Fragment {
     }
 
     private void retrieveFriends(String userEmail) {
+        Map<String, String> requestBodyMap = new HashMap<String, String>();
+        requestBodyMap.put("account_name", userEmail);
+        JSONObject jsonRequest = new JSONObject(requestBodyMap);
         JsonArrayRequest request
-                = new JsonArrayRequest(Request.Method.GET, UriBuilder.generateFindFriendsPath(userEmail), new Response.Listener<JSONArray>() {
+                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateFindFriendsPath(), jsonRequest, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.i(TAG, "Successful volley response: " + response.toString());
+                friendList = UserFactory.createUserListFrom(response);
+                UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, friendList);
+                friendListView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
 
@@ -87,6 +92,7 @@ public class FriendFragment extends Fragment {
                 Log.e(TAG, "Error during volley request: " + error.toString());
             }
         });
+
         RestClient.getInstance(getActivity().getApplicationContext()).addToRequestQueue(request);
     }
 
