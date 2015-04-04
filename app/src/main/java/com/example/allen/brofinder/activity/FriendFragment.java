@@ -21,6 +21,7 @@ import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
+import com.example.allen.brofinder.support.UserItemArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +46,7 @@ public class FriendFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userFactory = new UserFactory();
-        testRetrieveFriends();
+
         //retrieveFriends(getAccountEmail());
     }
 
@@ -53,9 +54,9 @@ public class FriendFragment extends Fragment {
     private List<User> testRetrieveFriends(){
         List<User> userList = new ArrayList<User>();
 
-        userList.add(1234, new User("bryant", "test_email@test.com"));
-        userList.add(111, new User("daniel", "daniel_email@test.com"));
-        userList.add(12, new User("allen", "allen_email@test.com"));
+        for(int i = 0; i <100; i++)
+            userList.add(new User("bryant", "test_email@test.com"));
+
 
         return userList;
     }
@@ -65,6 +66,9 @@ public class FriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
         friendListView = (ListView) view.findViewById(R.id.friend_listview);
+        List<User> friends = testRetrieveFriends();
+        UserItemArrayAdapter adapter = new UserItemArrayAdapter(getActivity(), R.layout.listview_nav_drawer_item_row, friends);
+        friendListView.setAdapter(adapter);
         return view;
     }
 
