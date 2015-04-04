@@ -27,16 +27,25 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View rowView = convertView;
+        ViewHolder viewHolder;
 
-        if(convertView == null) {
-            convertView = inflater.inflate(layoutResourceId, parent, false);
+        if(rowView == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            rowView = inflater.inflate(layoutResourceId, null);
+            viewHolder = new ViewHolder();
+            viewHolder.name = (TextView) rowView.findViewById(R.id.display_name_textview);
+            rowView.setTag(viewHolder);
         }
 
-        TextView textViewName = (TextView) convertView.findViewById(R.id.user_item_text);
-        User view = data.get(position);
-        textViewName.setText(view.getDisplayName());
+        viewHolder = (ViewHolder) rowView.getTag();
+        User user = data.get(position);
+        viewHolder.name.setText(user.getDisplayName());
 
-        return convertView;
+        return rowView;
+    }
+
+    static class ViewHolder {
+        public TextView name;
     }
 }
