@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/search_field"
@@ -15,7 +14,9 @@
             android:id="@+id/search_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/button"
@@ -25,16 +26,37 @@
             android:text="GO"/>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_below="@id/search_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ViewSwitcher
+        android:id="@+id/friend_search_viewswitcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_field">
 
-        <ListView
-            android:id="@+id/search_friend_listview"
+        <RelativeLayout
+            android:id="@+id/default_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <ListView
+                android:id="@+id/search_friend_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/results_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/results_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </ViewSwitcher>
 
 </RelativeLayout>
