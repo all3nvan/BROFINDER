@@ -8,6 +8,7 @@ public final class UriBuilder {
 
     private static final String REGISTER_PATH = "users";
     private static final String FRIEND_PATH = "relationships";
+    private static final String LOCATION_SESSION_PATH = "locations";
 
     public static String generateRegisterPath() {
         return generateBaseUri()
@@ -24,9 +25,19 @@ public final class UriBuilder {
                 .toString();
     }
 
+    public static String generateLocationSessionsPath() {
+        return generateBaseUri()
+                .appendPath(LOCATION_SESSION_PATH)
+                .build()
+                .toString();
+    }
+
+
     private static Uri.Builder generateBaseUri() {
         return new Uri.Builder()
                 .scheme(SCHEME)
                 .encodedAuthority(AUTHORITY);
     }
+
+
 }
