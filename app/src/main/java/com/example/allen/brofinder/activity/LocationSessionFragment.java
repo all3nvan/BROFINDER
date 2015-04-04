@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.os.Bundle;
 import android.view.View;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -34,6 +36,7 @@ public class LocationSessionFragment extends Fragment {
     private final static String TAG = "LocationSessionFragment";
     private ListView locationSessionView;
     private List<LocationSession> locationSessionList;
+    private List<LocationSession> testLocationSessionList;
 
     public static LocationSessionFragment newInstance(){
         LocationSessionFragment locationSessionFragment = new LocationSessionFragment();
@@ -51,13 +54,15 @@ public class LocationSessionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         Log.d(TAG, "In onCreateView");
         View view = inflater.inflate(R.layout.fragment_location_session, container, false);
+        locationSessionView = (ListView) view.findViewById(R.id.location_session_listview);
+        testLocationSessionList = testRetrieveLocationSession();
+        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, testLocationSessionList);
+        locationSessionView.setAdapter(adapter);
+        locationSessionView.setOnItemClickListener(new ListViewClickListener());
         Log.d(TAG, "finished onCreateView");
         return view;
 
     }
-
-
-
 
     private void retrieveLocationSessions(String userEmail){
         Map<String, String> requestBodyMap = new HashMap<>();
@@ -81,6 +86,29 @@ public class LocationSessionFragment extends Fragment {
         });
 
         RestClient.getInstance(getActivity().getApplicationContext()).addToRequestQueue(request);
+    }
+
+    private class ListViewClickListener implements ListView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId){
+            Log.i(TAG, "CLICKED: " + position);
+            Intent intent = new Intent(getActivity(), MapsActivity.class);
+            //Get the location session object
+            LocationSession locationSession = testLocationSessionList.get(position);
+
+            Bundle bundle = new Bundle();
+
+            bundle.putFloat("lat", locationSession.getLatitude());
+            bundle.putFloat("long", locationSession.getLongitude());
+
+            intent.putExtras(bundle);
+//            bundle.putFloat("lat", 1.23423f);
+//            bundle.putFloat("long", 1.7777f);
+
+
+            startActivity(intent);
+
+        }
     }
 
 
