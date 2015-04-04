@@ -74,7 +74,7 @@ public class FriendFragment extends Fragment {
         requestBodyMap.put("account_name", userEmail);
         JSONObject jsonRequest = new JSONObject(requestBodyMap);
         JsonArrayRequest request
-                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateFindFriendsPath(), jsonRequest, new Response.Listener<JSONArray>() {
+                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateSearchUserPath(), jsonRequest, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.i(TAG, "Successful volley response: " + response.toString());

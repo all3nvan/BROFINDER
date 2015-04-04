@@ -14,4 +14,5 @@
         <item>Send Location</item>
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_session_confirmation">SessionConfirmationActivity</string>
 </resources>

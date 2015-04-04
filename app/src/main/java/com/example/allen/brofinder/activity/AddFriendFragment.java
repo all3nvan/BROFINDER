@@ -1,5 +1,7 @@
 package com.example.allen.brofinder.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ViewSwitcher;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,6 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.adapter.factory.UserFactory;
 import com.example.allen.brofinder.domain.User;
+import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
 import com.example.allen.brofinder.support.UserArrayAdapter;
@@ -95,7 +99,17 @@ public class AddFriendFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
             Log.i(TAG, "CLICKED: " + position);
-            //Start intent to send location here
+            User receivingUser = searchResults.get(position);
+
+            String senderEmail = getAccountEmail();
+            Intent intent = new Intent(getActivity(), SessionConfirmationActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("senderEmail", senderEmail);
+            bundle.putString("receiverEmail", receivingUser.getEmail());
+
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 
@@ -130,4 +144,15 @@ public class AddFriendFragment extends Fragment {
         });
         RestClient.getInstance(getActivity().getApplicationContext()).addToRequestQueue(request);
     }
+
+
+    private SharedPreferences getGCMPreferences() {
+        return getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    private String getAccountEmail() {
+        return getGCMPreferences().getString(Constants.SHARED_PREFERENCES_PROPERTY_ACCOUNT_EMAIL, "");
+    }
+
 }
+

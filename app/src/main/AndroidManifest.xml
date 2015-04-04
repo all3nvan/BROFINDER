@@ -12,7 +12,6 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
 
-
     <permission
         android:name="com.example.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -42,11 +41,9 @@
             android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
-
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
 
         <meta-data
@@ -58,18 +55,19 @@
             android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <receiver
             android:name=".activity.GcmBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.example.allen.brofinder" />
             </intent-filter>
         </receiver>
@@ -78,6 +76,11 @@
             android:name=".activity.GcmIntentService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".activity.SessionConfirmationActivity"
+            android:label="@string/title_activity_session_confirmation" >
+        </activity>
     </application>
 
 </manifest>
