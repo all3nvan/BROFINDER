@@ -42,7 +42,16 @@ public class SessionCache {
 
         } else {
             recentUserList = gson.fromJson(sessionList, new TypeToken<List<User>>() {}.getType());
-            recentUserList.add(user);
+            boolean recentUserAlreadyInList = false;
+            for (int counter = 0; counter < recentUserList.size(); counter++) {
+                if (recentUserList.get(counter).getEmail().equals(user.getEmail())) {
+                    recentUserAlreadyInList = true;
+                    break;
+                }
+            }
+            if (!recentUserAlreadyInList) {
+                recentUserList.add(user);
+            }
         }
 
         String jsonString = gson.toJson(recentUserList);
