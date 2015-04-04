@@ -96,8 +96,8 @@ public class LocationSessionFragment extends Fragment {
 
             Bundle bundle = new Bundle();
 
-            bundle.putFloat("latitude", locationSession.getLatitude());
-            bundle.putFloat("longitude", locationSession.getLongitude());
+            bundle.putString("latitude", String.valueOf(locationSession.getLatitude()));
+            bundle.putString("longitude", String.valueOf(locationSession.getLongitude()));
 
             intent.putExtras(bundle);
 

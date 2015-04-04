@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.allen.brofinder.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -57,6 +58,7 @@ public class GcmIntentService extends IntentService {
                                 .bigText("Location received from " + extrasToSend.getString("display_name")))
                         .setContentIntent(contentIntent)
                         .build();
+        Toast.makeText(getApplicationContext(), extrasToSend.getString("latitude") + ", " + extrasToSend.getString("longitude"), Toast.LENGTH_LONG).show();
         notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
 
         notificationManager.notify(NOTIFICATION_ID, notification);

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -74,6 +75,7 @@ public class SessionConfirmationActivity extends FragmentActivity implements
                 paramMap.put("receiver_name", receiverEmail);
                 paramMap.put("latitude", latitude);
                 paramMap.put("longitude", longitude);
+                Toast.makeText(getApplicationContext(), latitude + ", " + longitude, Toast.LENGTH_LONG).show();
 
                 JSONObject jsonObject = new JSONObject(paramMap);
                 JsonObjectRequest request =

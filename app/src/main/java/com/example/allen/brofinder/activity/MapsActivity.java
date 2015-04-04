@@ -4,6 +4,7 @@ import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.allen.brofinder.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -47,11 +48,14 @@ public class MapsActivity extends FragmentActivity implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        destinationLat = getIntent().getExtras().getFloat(DESTINATION_LAT_PARAM);
-        destinationLon = getIntent().getExtras().getFloat(DESTINATION_LON_PARAM);
+        destinationLat = Float.parseFloat(getIntent().getExtras().getString(DESTINATION_LAT_PARAM));
+        destinationLon = Float.parseFloat(getIntent().getExtras().getString(DESTINATION_LON_PARAM));
         destinationLocation = new Location("");
         destinationLocation.setLatitude(destinationLat);
         destinationLocation.setLongitude(destinationLon);
+        Log.d("HEY LOOK HERE", String.valueOf(destinationLat));
+        Log.d("HEY LOOK HERE", String.valueOf(destinationLon));
+        Toast.makeText(getApplicationContext(), getIntent().getExtras().getString(DESTINATION_LAT_PARAM) + ", " + getIntent().getExtras().getString(DESTINATION_LON_PARAM), Toast.LENGTH_LONG).show();
     }
 
     @Override
