@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class LoginActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
+public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "LoginActivity";
     private GoogleCloudMessaging gcm;

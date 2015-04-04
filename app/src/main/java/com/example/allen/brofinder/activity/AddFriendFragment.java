@@ -109,6 +109,7 @@ public class AddFriendFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("senderEmail", senderEmail);
             bundle.putString("receiverEmail", receivingUser.getEmail());
+            bundle.putString("receiverDisplayName", receivingUser.getDisplayName());
 
             intent.putExtras(bundle);
             startActivity(intent);
