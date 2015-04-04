@@ -29,8 +29,8 @@ public class MapsActivity extends FragmentActivity implements
     private Location currentLocation;
     private Location destinationLocation;
 
-    private static final String DESTINATION_LAT_PARAM = "lat";
-    private static final String DESTINATION_LON_PARAM = "lon";
+    private static final String DESTINATION_LAT_PARAM = "latitude";
+    private static final String DESTINATION_LON_PARAM = "longitude";
 
     private float destinationLat;
     private float destinationLon;
