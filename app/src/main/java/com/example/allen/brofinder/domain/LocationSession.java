@@ -2,22 +2,22 @@ package com.example.allen.brofinder.domain;
 
 
 public class LocationSession {
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
 
     private String senderName;
 
-    public LocationSession(float latitude, float longitude, String senderName){
+    public LocationSession(double latitude, double longitude, String senderName){
         this.latitude = latitude;
         this.longitude = longitude;
         this.senderName = senderName;
     }
 
-    public float getLongitude(){
+    public double getLongitude(){
         return longitude;
     }
 
-    public float getLatitude(){
+    public double getLatitude(){
         return latitude;
     }
 

@@ -55,8 +55,8 @@ public class MapFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            destinationLat = Float.parseFloat(getArguments().getString(DESTINATION_LAT_PARAM));
-            destinationLon = Float.parseFloat(getArguments().getString(DESTINATION_LON_PARAM));
+            destinationLat = Double.parseDouble(getArguments().getString(DESTINATION_LAT_PARAM));
+            destinationLon = Double.parseDouble(getArguments().getString(DESTINATION_LON_PARAM));
         }
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())

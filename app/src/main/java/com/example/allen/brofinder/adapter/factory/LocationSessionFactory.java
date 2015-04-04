@@ -20,7 +20,7 @@ public class LocationSessionFactory {
                 String latitude = locationSessionJsonObject.getString("latitude");
                 String longitude = locationSessionJsonObject.getString("longitude");
                 String senderName = locationSessionJsonObject.getString("sender_name");
-                locationSessionList.add(new LocationSession(Float.parseFloat(latitude), Float.parseFloat(longitude), senderName));
+                locationSessionList.add(new LocationSession(Double.parseDouble(latitude), Double.parseDouble(longitude), senderName));
             }
             catch (Exception e){
                 Log.e("LocationSessionFactory", e.toString());
