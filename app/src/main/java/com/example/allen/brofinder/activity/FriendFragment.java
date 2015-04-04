@@ -17,15 +17,20 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.adapter.factory.UserFactory;
+import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.Constants;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.UriBuilder;
+import com.example.allen.brofinder.support.UserItemArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.List;
 
 public class FriendFragment extends Fragment {
     private final static String TAG = "FriendFragment";
@@ -41,13 +46,29 @@ public class FriendFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userFactory = new UserFactory();
-        retrieveFriends(getAccountEmail());
+
+        //retrieveFriends(getAccountEmail());
     }
+
+    //test method to return friends
+    private List<User> testRetrieveFriends(){
+        List<User> userList = new ArrayList<User>();
+
+        for(int i = 0; i <100; i++)
+            userList.add(new User("bryant", "test_email@test.com"));
+
+
+        return userList;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
         friendListView = (ListView) view.findViewById(R.id.friend_listview);
+        List<User> friends = testRetrieveFriends();
+        UserItemArrayAdapter adapter = new UserItemArrayAdapter(getActivity(), R.layout.listview_nav_drawer_item_row, friends);
+        friendListView.setAdapter(adapter);
         return view;
     }
 
