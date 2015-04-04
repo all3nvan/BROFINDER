@@ -48,7 +48,7 @@ public class FriendFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userFactory = new UserFactory();
 
-        //retrieveFriends(getAccountEmail());
+        retrieveFriends(getAccountEmail());
     }
 
     //test method to return friends

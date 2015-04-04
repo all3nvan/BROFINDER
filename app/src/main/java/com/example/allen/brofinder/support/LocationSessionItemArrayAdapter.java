@@ -10,22 +10,25 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.allen.brofinder.R;
-import com.example.allen.brofinder.domain.User;
+import com.example.allen.brofinder.domain.LocationSession;
 
+import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class UserItemArrayAdapter extends ArrayAdapter<User>{
+public class LocationSessionItemArrayAdapter extends ArrayAdapter<LocationSession>{
 
     private static class ViewHolder{
         TextView name;
+        TextView latitude;
+        TextView longitude;
     }
 
     Context mContext;
     int layoutResourceId;
-    List<User> data = null;
+    List<LocationSession> data = null;
 
-    public UserItemArrayAdapter(Context context, int layoutResourceId, List<User> objects){
+    public LocationSessionItemArrayAdapter(Context context, int layoutResourceId, List<LocationSession> objects){
         super(context, layoutResourceId, objects);
         this.mContext = context;
         this.layoutResourceId = layoutResourceId;
@@ -34,15 +37,17 @@ public class UserItemArrayAdapter extends ArrayAdapter<User>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        User userObj = data.get(position);
-
         ViewHolder viewHolder;
+        LocationSession locationSessionObj = data.get(position);
 
         if (convertView == null){
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.location_session_item_name);
+            viewHolder.latitude = (TextView) convertView.findViewById(R.id.location_session_item_latitude);
+            viewHolder.longitude = (TextView) convertView.findViewById(R.id.location_session_item_longitude);
+
             convertView.setTag(viewHolder);
         }
 
@@ -50,8 +55,16 @@ public class UserItemArrayAdapter extends ArrayAdapter<User>{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(userObj.getDisplayName());
+        viewHolder.name.setText(locationSessionObj.getSenderName());
+        viewHolder.latitude.setText(((Float)locationSessionObj.getLatitude()).toString());
+        viewHolder.longitude.setText(((Float)locationSessionObj.getLongitude()).toString());
+
+
 
         return convertView;
     }
+
+
+
+
 }
