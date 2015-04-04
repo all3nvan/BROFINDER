@@ -9,34 +9,33 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.allen.brofinder.R;
-import com.example.allen.brofinder.domain.DrawerItem;
+import com.example.allen.brofinder.domain.User;
 
 import java.util.List;
 
-public class DrawerItemArrayAdapter extends ArrayAdapter<DrawerItem> {
+public class UserArrayAdapter extends ArrayAdapter<User> {
+    private Context context;
+    private int layoutResourceId;
+    private List<User> data;
 
-    Context mContext;
-    int layoutResourceId;
-    List<DrawerItem> data = null;
-
-    public DrawerItemArrayAdapter(Context context, int layoutResourceId, List<DrawerItem> objects) {
+    public UserArrayAdapter(Context context, int layoutResourceId, List<User> objects) {
         super(context, layoutResourceId, objects);
         this.layoutResourceId = layoutResourceId;
-        this.mContext = context;
+        this.context = context;
         this.data = objects;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
-        if (convertView == null) {
+        if(convertView == null) {
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
 
-        TextView textViewName = (TextView) convertView.findViewById(R.id.nav_drawer_item_text);
-        DrawerItem folder = data.get(position);
-        textViewName.setText(folder.name);
+        TextView textViewName = (TextView) convertView.findViewById(R.id.user_item_text);
+        User view = data.get(position);
+        textViewName.setText(view.getDisplayName());
 
         return convertView;
     }
