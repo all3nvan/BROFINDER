@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
 import com.example.allen.brofinder.domain.LocationSession;
 import com.example.allen.brofinder.support.RestClient;
@@ -23,7 +23,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -68,8 +67,8 @@ public class SessionConfirmationActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 //Send lat and long to backend here
-                final String latitude = ((Double)currentLocation.getLatitude()).toString();
-                final String longitude = ((Double)currentLocation.getLongitude()).toString();
+                final String latitude = ((Double) currentLocation.getLatitude()).toString();
+                final String longitude = ((Double) currentLocation.getLongitude()).toString();
                 Map<String, String> paramMap = new HashMap<>();
                 paramMap.put("account_name", senderEmail);
                 paramMap.put("receiver_name", receiverEmail);
@@ -77,10 +76,10 @@ public class SessionConfirmationActivity extends FragmentActivity implements
                 paramMap.put("longitude", longitude);
 
                 JSONObject jsonObject = new JSONObject(paramMap);
-                JsonArrayRequest request =
-                        new JsonArrayRequest(Request.Method.POST, UriBuilder.generateLocationPath(), jsonObject, new Response.Listener<JSONArray>() {
+                JsonObjectRequest request =
+                        new JsonObjectRequest(Request.Method.POST, UriBuilder.generateLocationPath(), jsonObject, new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(JSONArray response) {
+                            public void onResponse(JSONObject response) {
                                 Log.i(TAG, "WOOOO successfully sent location");
                                 LocationSession locationSession = new LocationSession(Float.parseFloat(latitude), Float.parseFloat(longitude), receiverEmail);
                                 sessionCache.saveSession(locationSession);
