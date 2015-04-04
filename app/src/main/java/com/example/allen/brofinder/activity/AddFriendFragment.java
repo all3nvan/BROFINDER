@@ -13,18 +13,34 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ViewSwitcher;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.allen.brofinder.R;
+import com.example.allen.brofinder.adapter.factory.UserFactory;
 import com.example.allen.brofinder.domain.User;
+import com.example.allen.brofinder.support.RestClient;
+import com.example.allen.brofinder.support.UriBuilder;
 import com.example.allen.brofinder.support.UserArrayAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddFriendFragment extends Fragment {
     private static final String TAG = "AddFriendFragment";
     private ListView searchListView;
+    private ListView resultsListView;
     private ViewSwitcher viewSwitcher;
     private EditText searchTextBox;
+    private UserArrayAdapter searchResultArrayAdapter;
+    private List<User> searchResults;
+
 
     public static AddFriendFragment newInstance() {
         return new AddFriendFragment();
@@ -40,33 +56,35 @@ public class AddFriendFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_add_friend, container, false);
         viewSwitcher = (ViewSwitcher) view.findViewById(R.id.friend_search_viewswitcher);
         searchListView = (ListView) view.findViewById(R.id.search_friend_listview);
+        resultsListView = (ListView) view.findViewById(R.id.results_listview);
         searchTextBox = (EditText) view.findViewById(R.id.search_box);
         searchTextBox.addTextChangedListener(new TextWatcher() {
             boolean isOnDefaultView = true;
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence searchInput, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0 && isOnDefaultView) {
+            public void onTextChanged(CharSequence searchInput, int start, int before, int count) {
+                if (searchInput.length() != 0 && isOnDefaultView) {
                     viewSwitcher.showNext();
                     isOnDefaultView = false;
                 }
-                if (s.length() == 0 && !isOnDefaultView) {
+                if (searchInput.length() == 0 && !isOnDefaultView) {
                     viewSwitcher.showNext();
                     isOnDefaultView = true;
                 }
+                searchForUser(searchInput.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable searchInput) {
 
             }
         });
-        List<User> userList = mockUserList();
-        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, userList);
+        List<User> recentUserList = mockUserList();
+        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
         searchListView.setAdapter(adapter);
         searchListView.setOnItemClickListener(new ListViewClickListener());
         return view;
@@ -85,5 +103,33 @@ public class AddFriendFragment extends Fragment {
         userList.add(new User("derp", "derp"));
         userList.add(new User("herp", "herp"));
         return userList;
+    }
+
+    private void searchForUser(final String email) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("account_name", email);
+
+        JSONObject jsonObject = new JSONObject(paramMap);
+        JsonArrayRequest request
+                = new JsonArrayRequest(Request.Method.POST, UriBuilder.generateFindFriendsPath(), jsonObject, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.i(TAG, "Successful volley response: " + response.toString());
+                searchResults = UserFactory.createUserListFrom(response);
+                if (searchResultArrayAdapter == null) {
+                    searchResultArrayAdapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, searchResults);
+                    resultsListView.setAdapter(searchResultArrayAdapter);
+                }
+                searchResultArrayAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "Searching for: " + email);
+                Log.e(TAG, "Error during volley request: " + error.toString());
+            }
+        });
+        RestClient.getInstance(getActivity().getApplicationContext()).addToRequestQueue(request);
     }
 }
