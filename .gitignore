@@ -27,3 +27,5 @@ proguard/
 
 # Ignore .idea folder
 .idea/
+
+*.iml

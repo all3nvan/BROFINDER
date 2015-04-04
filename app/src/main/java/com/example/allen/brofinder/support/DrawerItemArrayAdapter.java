@@ -30,7 +30,7 @@ public class DrawerItemArrayAdapter extends ArrayAdapter<DrawerItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
 
