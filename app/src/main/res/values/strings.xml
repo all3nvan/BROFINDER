@@ -13,6 +13,7 @@
         <item>Map</item>
         <item>Friends</item>
         <item>Friends Locations</item>
+        <item>Add Friends</item>
 
     </string-array>
     <string name="title_activity_login">LoginActivity</string>
