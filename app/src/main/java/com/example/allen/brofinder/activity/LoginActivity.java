@@ -233,9 +233,9 @@ public class LoginActivity extends ActionBarActivity implements ConnectionCallba
     private void sendRegistrationToBackend(String email, String registrationId, String displayName) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("email", email);
-            jsonObject.put("registrationId", registrationId);
-            jsonObject.put("displayName", displayName);
+            jsonObject.put("account_name", email);
+            jsonObject.put("registration_id", registrationId);
+            jsonObject.put("display_name", displayName);
         } catch (JSONException e) {
             Log.e(TAG, "Error creating json request: " + e.toString());
         }
