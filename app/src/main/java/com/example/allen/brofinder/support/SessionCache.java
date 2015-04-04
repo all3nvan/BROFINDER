@@ -1,7 +1,6 @@
 package com.example.allen.brofinder.support;
 
-
-import com.example.allen.brofinder.domain.LocationSession;
+import com.example.allen.brofinder.domain.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -24,29 +23,29 @@ public class SessionCache {
         return mContext.getSharedPreferences(Constants.SHARED_PREFERENCES_SESSION_NAME, Context.MODE_PRIVATE);
     }
 
-    public List<LocationSession> getSessionHistory(){
+    public List<User> getRecentUsers(){
         String jsonString = getSessionSharedPreferences().getString(Constants.SHARED_PREFERENCES_PROPERTY_SESSION_LIST, null);
 
         if (jsonString == null){
             return new ArrayList<>();
         }
-        return gson.fromJson(jsonString, new TypeToken<List<LocationSession>>(){}.getType());
+        return gson.fromJson(jsonString, new TypeToken<List<User>>(){}.getType());
 
     }
 
-    public void saveSession(LocationSession locationSession){
+    public void saveRecentUser(User user){
         String sessionList = getSessionSharedPreferences().getString(Constants.SHARED_PREFERENCES_PROPERTY_SESSION_LIST, null);
-        List<LocationSession> locationSessionList;
+        List<User> recentUserList;
         if (sessionList == null) {
-            locationSessionList = new ArrayList<>();
-            locationSessionList.add(locationSession);
+            recentUserList = new ArrayList<>();
+            recentUserList.add(user);
 
         } else {
-            locationSessionList = gson.fromJson(sessionList, new TypeToken<List<LocationSession>>() {}.getType());
-            locationSessionList.add(locationSession);
+            recentUserList = gson.fromJson(sessionList, new TypeToken<List<User>>() {}.getType());
+            recentUserList.add(user);
         }
 
-        String jsonString = gson.toJson(locationSessionList);
+        String jsonString = gson.toJson(recentUserList);
         getSessionSharedPreferences().edit().putString(Constants.SHARED_PREFERENCES_PROPERTY_SESSION_LIST, jsonString).apply();
     }
 }

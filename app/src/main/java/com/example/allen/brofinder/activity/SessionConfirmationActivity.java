@@ -13,7 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allen.brofinder.R;
-import com.example.allen.brofinder.domain.LocationSession;
+import com.example.allen.brofinder.domain.User;
 import com.example.allen.brofinder.support.RestClient;
 import com.example.allen.brofinder.support.SessionCache;
 import com.example.allen.brofinder.support.UriBuilder;
@@ -81,8 +81,7 @@ public class SessionConfirmationActivity extends FragmentActivity implements
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.i(TAG, "WOOOO successfully sent location");
-                                LocationSession locationSession = new LocationSession(Float.parseFloat(latitude), Float.parseFloat(longitude), receiverEmail);
-                                sessionCache.saveSession(locationSession);
+                                sessionCache.saveRecentUser(new User(receiverDisplayName, receiverEmail));
                             }
 
                         }, new Response.ErrorListener() {

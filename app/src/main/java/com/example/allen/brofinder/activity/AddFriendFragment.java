@@ -48,6 +48,7 @@ public class AddFriendFragment extends Fragment {
     private UserArrayAdapter searchResultArrayAdapter;
     private List<User> searchResults;
     private SessionCache sessionCache;
+    private List<User> recentUserList;
 
     public static AddFriendFragment newInstance() {
         return new AddFriendFragment();
@@ -93,16 +94,16 @@ public class AddFriendFragment extends Fragment {
 
             }
         });
-        List<LocationSession> recentUserList = sessionCache.getSessionHistory();
-        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
+        recentUserList = sessionCache.getRecentUsers();
+        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, recentUserList);
         recentListView.setAdapter(adapter);
-        recentListView.setOnItemClickListener(new ListViewClickListener());
+        recentListView.setOnItemClickListener(new RecentListViewClickListener());
 
-        resultsListView.setOnItemClickListener(new ListViewClickListener());
+        resultsListView.setOnItemClickListener(new SearchResultListViewClickListener());
         return view;
     }
 
-    private class ListViewClickListener implements ListView.OnItemClickListener {
+    private class SearchResultListViewClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
             Log.i(TAG, "CLICKED: " + position);
@@ -121,11 +122,23 @@ public class AddFriendFragment extends Fragment {
         }
     }
 
-    private List<User> mockUserList() {
-        List<User> userList = new ArrayList<>();
-        userList.add(new User("derp", "derp"));
-        userList.add(new User("herp", "herp"));
-        return userList;
+    private class RecentListViewClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
+            Log.i(TAG, "CLICKED: " + position);
+            User receivingUser = recentUserList.get(position);
+
+            String senderEmail = getAccountEmail();
+            Intent intent = new Intent(getActivity(), SessionConfirmationActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("senderEmail", senderEmail);
+            bundle.putString("receiverEmail", receivingUser.getEmail());
+            bundle.putString("receiverDisplayName", receivingUser.getDisplayName());
+
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     private void searchForUser(final String email) {
