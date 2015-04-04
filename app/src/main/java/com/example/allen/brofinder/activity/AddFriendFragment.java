@@ -2,9 +2,11 @@ package com.example.allen.brofinder.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.allen.brofinder.R;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddFriendFragment extends Fragment {
+    private static final String TAG = "AddFriendFragment";
     private ListView searchListView;
 
     public static AddFriendFragment newInstance() {
@@ -33,7 +36,15 @@ public class AddFriendFragment extends Fragment {
         List<User> userList = mockUserList();
         UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, userList);
         searchListView.setAdapter(adapter);
+        searchListView.setOnItemClickListener(new ListViewClickListener());
         return view;
+    }
+
+    private class ListViewClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
+            Log.i(TAG, "CLICKED: " + position);
+        }
     }
 
     private List<User> mockUserList() {
