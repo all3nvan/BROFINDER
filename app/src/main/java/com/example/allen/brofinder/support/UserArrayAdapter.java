@@ -35,17 +35,20 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
             rowView = inflater.inflate(layoutResourceId, null);
             viewHolder = new ViewHolder();
             viewHolder.name = (TextView) rowView.findViewById(R.id.display_name_textview);
+            viewHolder.accountName = (TextView) rowView.findViewById(R.id.account_name_textview);
             rowView.setTag(viewHolder);
         }
 
         viewHolder = (ViewHolder) rowView.getTag();
         User user = data.get(position);
         viewHolder.name.setText(user.getDisplayName());
+        viewHolder.accountName.setText(user.getEmail());
 
         return rowView;
     }
 
     static class ViewHolder {
         public TextView name;
+        public TextView accountName;
     }
 }
