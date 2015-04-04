@@ -36,7 +36,6 @@ public class LocationSessionFragment extends Fragment {
     private final static String TAG = "LocationSessionFragment";
     private ListView locationSessionView;
     private List<LocationSession> locationSessionList;
-    private List<LocationSession> testLocationSessionList;
 
     public static LocationSessionFragment newInstance(){
         LocationSessionFragment locationSessionFragment = new LocationSessionFragment();
@@ -57,11 +56,6 @@ public class LocationSessionFragment extends Fragment {
         locationSessionView = (ListView) view.findViewById(R.id.location_session_listview);
         locationSessionView.setOnItemClickListener(new ListViewClickListener());
 
-        //TODO BE TAKEN OUT WHEN ENDPOINT IS IN PLACE
-//        testLocationSessionList = testRetrieveLocationSession();
-//        LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, testLocationSessionList);
-//        locationSessionView.setAdapter(adapter);
-
         Log.d(TAG, "finished onCreateView");
         return view;
 
@@ -77,6 +71,7 @@ public class LocationSessionFragment extends Fragment {
             public void onResponse(JSONArray response) {
                 Log.i(TAG, "Successful volley response: " + response.toString());
                 locationSessionList = LocationSessionFactory.createLocationSessionListFrom(response);
+
                 LocationSessionItemArrayAdapter adapter = new LocationSessionItemArrayAdapter(getActivity(), R.layout.listview_location_session_row, locationSessionList);
                 locationSessionView.setAdapter(adapter);
             }
@@ -97,7 +92,7 @@ public class LocationSessionFragment extends Fragment {
             Log.i(TAG, "CLICKED: " + position);
             Intent intent = new Intent(getActivity(), MapsActivity.class);
             //Get the location session object
-            LocationSession locationSession = testLocationSessionList.get(position);
+            LocationSession locationSession = locationSessionList.get(position);
 
             Bundle bundle = new Bundle();
 
@@ -119,15 +114,7 @@ public class LocationSessionFragment extends Fragment {
         return getGCMPreferences().getString(Constants.SHARED_PREFERENCES_PROPERTY_ACCOUNT_EMAIL, "");
     }
 
-    private List<LocationSession> testRetrieveLocationSession(){
-        List<LocationSession> locationSessionList = new ArrayList<LocationSession>();
 
-        for(int i = 0; i < 100; i++)
-            locationSessionList.add(new LocationSession(1.40f, 1.23f, "bryant"));
-
-        return locationSessionList;
-
-    }
 }
 
 
