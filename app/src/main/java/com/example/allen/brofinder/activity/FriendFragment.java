@@ -66,6 +66,9 @@ public class FriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
         friendListView = (ListView) view.findViewById(R.id.friend_listview);
+        List<User> friends = testRetrieveFriends();
+        UserArrayAdapter adapter = new UserArrayAdapter(getActivity(), R.layout.listview_user_row, friends);
+        friendListView.setAdapter(adapter);
         return view;
     }
 
